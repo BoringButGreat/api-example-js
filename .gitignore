@@ -1,4 +1,3 @@
 /secrets.json
-/state.json
-/data/*.json
+/vendors/*.json
 /node_modules

@@ -4,7 +4,12 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "sync": "node ./index.js"
+    "create-token-with-password": "node ./src/auth/create-token-with-password.js",
+    "create-token-with-client-credentials": "node ./src/auth/create-token-with-client-credentials.js",
+    "get-token-info": "node ./src/auth/get-token-info.js",
+    "get-token-subject": "node ./src/auth/get-token-subject.js",
+    "expire-token": "node ./src/auth/expire-token.js",
+    "sync-vendors": "node ./src/vendors/sync.js"
   },
   "type": "module",
   "dependencies": {

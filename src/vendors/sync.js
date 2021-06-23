@@ -6,14 +6,11 @@ import { readFile, writeFile } from "fs/promises";
 // is inlined here for clarity.
 
 // Update with target environment and api version
-const TOKEN_ENDPOINT = "https://staging-api.app.vendorful.com/auth/v1/token";
-const VENDORS_API = "https://staging-api.app.vendorful.com/vendors/v1";
+const TOKEN_ENDPOINT = "https://api.vendorful.com/auth/v1/token";
+const VENDORS_API = "https://api.vendorful.com/vendors/v1";
 
 // Update with your organization's Vendorful ID
-const ORGANIZATION_ID = "ac0407bf-4f3a-4899-b00d-0b184dd3463c";
-
-// If you want to limit to process fewer than 10 entities per cycle, change here
-const LIMIT = 10;
+const ORGANIZATION_ID = "acf6ce31-5abb-490e-b76f-15f299ca2853";
 
 // Gets the token by posting secrets.json to the token endpoint.
 // See secrets-sample.json for an example.
@@ -21,20 +18,19 @@ async function getToken() {
   const response = await fetch(TOKEN_ENDPOINT, {
     method: "post",
     body: await readFile("secrets.json"),
-    headers: {"content-type": "application/json"}
+    headers: { "content-type": "application/json" },
   });
   return await response.json();
 }
 
 // Pass in token and updated_since to get the next batch of entities to process
-async function getEntities({access_token}, updated_since) {
+async function getEntities({ access_token }, updated_since) {
   // Sorting by updated_at so we process entities in the order in which they were updated.
-  // Limit to a reasonable number to process in one transaction
-  const params = {sort: "updated_at", limit: LIMIT};
+  const params = { sort: "updated_at" };
 
   // Only pass updated_since if we have one.
   // First request will not pass this field, thus ensuring we start at the oldest entity.
-  if(updated_since) params.updated_since = updated_since;
+  if (updated_since) params.updated_since = updated_since;
 
   // Build url with query params
   const url = `${VENDORS_API}/${ORGANIZATION_ID}/legal-entities?${querystring.encode(params)}`;
@@ -42,7 +38,7 @@ async function getEntities({access_token}, updated_since) {
   // Pass the access_token from the token in the authorization header
   const response = await fetch(url, {
     method: "get",
-    headers: {"authorization": `bearer ${access_token}`}
+    headers: { authorization: `bearer ${access_token}` },
   });
 
   // Await the json response data, then return it
@@ -52,17 +48,17 @@ async function getEntities({access_token}, updated_since) {
 async function getState() {
   // Try to read sync state from state.json
   try {
-    return JSON.parse(await readFile("state.json"));
-  } catch(_e) {
+    return JSON.parse(await readFile("vendors/state.json"));
+  } catch (_e) {
     // Default state is to have updated_since as null
     // This will trigger the sync to start from the beginning if state is missing.
-    return {updated_since: null};
+    return { updated_since: null };
   }
 }
 
 function setState(state) {
   // Persist state across sync jobs
-  return writeFile("state.json", JSON.stringify(state));
+  return writeFile("vendors/state.json", JSON.stringify(state));
 }
 
 // Sync a batch of updated entities
@@ -71,18 +67,18 @@ async function sync(token, state) {
   const entities = await getEntities(token, state.updated_since);
 
   // Only continue if there were some updates to process
-  if(entities.length === 0) {
+  if (entities.length === 0) {
     console.log("No outstanding updates.");
     return;
   }
 
   // Loop through the entities, processing them as you see fit
-  for(let entity of entities) {
+  for (let entity of entities) {
     // Log some progress to the console
     console.log(`${entity.id}: ${entity.name}`);
 
-    // In our case, we are just writing the json to a file in the data dir
-    await writeFile(`data/${entity.id}.json`, JSON.stringify(entity));
+    // In our case, we are just writing the json to a file in the vendors dir
+    await writeFile(`vendors/${entity.id}.json`, JSON.stringify(entity));
 
     // When you process an entity, since they are ordered by updated_at,
     // you should update the state.json so that the entity is not processed again.
