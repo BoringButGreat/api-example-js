@@ -8,9 +8,9 @@ To make example code easier to read, it relies on the [node-fetch](https://www.n
 ## Auth
 
 Vendorful uses a subset of the ubiquitous [OAuth2](https://oauth.net/2/) standard that most modern large public APIs use, including Google, Microsoft, Facebook, Twitter, and many more.
-Vendorful support the `password` and `client_credentials` grant types.
+Vendorful supports the `password` and `client_credentials` grant types.
 Additionally, Vendorful allows applications to impersonate users of their own organizations by optionally passing an email address as `username` to the `client_credentials` grant type.
-Tokens created this way will have the permissionns of the user and any updates done with this token will be tracked as being done as the user via the application.
+Tokens created this way will have the permissions of the user and any updates done with this token will be tracked as being done as the user via the application.
 Client credentials are created upon request to Vendorful Support.
 
 ### Create token with password [source](./src/auth/create-token-with-password.js)
