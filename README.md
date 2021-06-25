@@ -47,3 +47,17 @@ See it in action: `yarn run sync-vendors`.
 This command assumes you have a `secrets.json` file with appropriate credentials. See [secrets-sample.json](./secrets-sample.json) for the format.
 
 This will start with the oldest legal entity and fetch up to 10 at a time writing the JSON for each entity into a file in the vendors directory. It also maintains state in a json file so that it only fetches updates upon subsequent executions. The method for doing this is documented in the [source file](./src/vendors/sync.js).
+
+### Updating attributes [source](./src/vendors/set-attribute-value.js)
+
+See it in action: `yarn run set-attribute-value <organization_id> <entity_id> <attribute_id> <value>`.
+
+This command assumes you have a `secrets.json` file with appropriate credentials. See [secrets-sample.json](./secrets-sample.json) for the format.
+
+Custom attribute values are recorded at the legal entity level.
+Audit history will track the token used to make the change, and will display in the Vendorful application as having been made by the user and/or application associated with the token.
+
+- `organization_id` vendorful id of your organization
+- `entity_id` the vendorful id of the legal entity you wish to update
+- `attribute_id` the vendorful id of the attribute you wish to update
+- `value` the new value
