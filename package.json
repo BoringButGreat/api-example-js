@@ -11,7 +11,8 @@
     "expire-token": "node ./src/auth/expire-token.js",
     "sync-vendors": "node ./src/vendors/sync.js",
     "set-attribute-value": "node ./src/vendors/set-attribute-value.js",
-    "get-intake-form": "node ./src/intake-forms/get-intake-form.js"
+    "get-intake-form": "node ./src/intake-forms/get-intake-form.js",
+    "create-intake-form-response": "node ./src/intake-forms/create-intake-form-response.js"
   },
   "type": "module",
   "dependencies": {
