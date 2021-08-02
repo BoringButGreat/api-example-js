@@ -1,4 +1,5 @@
 import fetch from "node-fetch";
+import { TOKEN_ENDPOINT } from "./../api_urls.js";
 
 /*
  * Creating a token with grant_type client_credentials can be
@@ -14,8 +15,6 @@ import fetch from "node-fetch";
  * You can get client credentials created for your organization by
  * contacting vendorful support.
  */
-
-const TOKEN_ENDPOINT = "https://api.vendorful.com/auth/v1/token";
 
 async function createToken(id, secret, username) {
   const params = {
@@ -38,7 +37,9 @@ async function main() {
   const email = process.argv[4];
   if (!secret) {
     console.log("Please pass client_id and client_secret.");
-    console.log("> yarn run create-token-with-client-credentials <client_id> <client_secret> <optional_user_email>");
+    console.log(
+      "> yarn run create-token-with-client-credentials <client_id> <client_secret> <optional_user_email>"
+    );
   } else {
     try {
       const token = await createToken(id, secret, email);

@@ -1,12 +1,11 @@
 import fetch from "node-fetch";
+import { TOKEN_ENDPOINT } from "./../api_urls.js";
 
 /*
  * Tokens can be expired early by calling DELETE on the token
  * endpoint using the authorization header like you would any
  * other authenticated call.
  */
-
-const TOKEN_ENDPOINT = "https://api.vendorful.com/auth/v1/token";
 
 async function expireToken(access_token) {
   const response = await fetch(TOKEN_ENDPOINT, {

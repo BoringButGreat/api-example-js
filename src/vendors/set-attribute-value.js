@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import { readFile } from "fs/promises";
+import { TOKEN_ENDPOINT, VENDORS_API } from "./../api_urls.js";
 
 /*
  * Attributes can be updated by doing a PUT request to the legal-entities
@@ -9,9 +10,6 @@ import { readFile } from "fs/promises";
  * display in the Vendorful app as having been done by the user and/or application
  * that is represented by the token.
  */
-
-const TOKEN_ENDPOINT = "https://api.vendorful.com/auth/v1/token";
-const VENDORS_API = "https://api.vendorful.com/vendors/v1";
 
 // Gets the token by posting secrets.json to the token endpoint.
 // See secrets-sample.json for an example.
@@ -24,12 +22,22 @@ async function getToken() {
   return await response.json();
 }
 
-async function setAttributeValue({ access_token }, organization_id, entity_id, attribute_id, value) {
+async function setAttributeValue(
+  { access_token },
+  organization_id,
+  entity_id,
+  attribute_id,
+  value
+) {
+  console.log("accessToken", accessToken);
   const url = `${VENDORS_API}/${organization_id}/legal-entities/${entity_id}/attributes/${attribute_id}`;
   const response = await fetch(url, {
     method: "put",
     body: JSON.stringify({ value: value }),
-    headers: { authorization: `bearer ${access_token}`, "content-type": "application/json" },
+    headers: {
+      authorization: `bearer ${access_token}`,
+      "content-type": "application/json",
+    },
   });
   return await response.json();
 }
@@ -41,11 +49,21 @@ async function main() {
   const attribute_id = process.argv[4];
   const value = process.argv[5];
   if (!value) {
-    console.log("Please pass organization_id, entity_id, attribute_id, and value.");
-    console.log("> yarn run set-attribute-value <organization_id> <entity_id> <attribute_id> <value>");
+    console.log(
+      "Please pass organization_id, entity_id, attribute_id, and value."
+    );
+    console.log(
+      "> yarn run set-attribute-value <organization_id> <entity_id> <attribute_id> <value>"
+    );
   } else {
     try {
-      const result = await setAttributeValue(token, organization_id, entity_id, attribute_id, value);
+      const result = await setAttributeValue(
+        token,
+        organization_id,
+        entity_id,
+        attribute_id,
+        value
+      );
       console.log(JSON.stringify(result, null, 2));
     } catch (e) {
       console.error(e);

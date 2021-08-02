@@ -1,13 +1,10 @@
 import fetch from "node-fetch";
 import querystring from "querystring";
 import { readFile, writeFile } from "fs/promises";
+import { TOKEN_ENDPOINT, VENDORS_API } from "./../api_urls.js";
 
 // Configuration would generally be stored in ENV or config files, but
 // is inlined here for clarity.
-
-// Update with target environment and api version
-const TOKEN_ENDPOINT = "https://api.vendorful.com/auth/v1/token";
-const VENDORS_API = "https://api.vendorful.com/vendors/v1";
 
 // Update with your organization's Vendorful ID
 const ORGANIZATION_ID = "acf6ce31-5abb-490e-b76f-15f299ca2853";
@@ -33,7 +30,9 @@ async function getEntities({ access_token }, updated_since) {
   if (updated_since) params.updated_since = updated_since;
 
   // Build url with query params
-  const url = `${VENDORS_API}/${ORGANIZATION_ID}/legal-entities?${querystring.encode(params)}`;
+  const url = `${VENDORS_API}/${ORGANIZATION_ID}/legal-entities?${querystring.encode(
+    params
+  )}`;
 
   // Pass the access_token from the token in the authorization header
   const response = await fetch(url, {
