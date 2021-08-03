@@ -17,12 +17,12 @@ async function createIntakeFormResponse(
   { access_token },
   organizationId,
   formId,
-  response_fields
+  fields
 ) {
   const url = `${INTAKE_FORMS_API}/${organizationId}/intake-forms/${formId}`;
   const response = await fetch(url, {
     method: "post",
-    body: JSON.stringify({ response_fields }),
+    body: JSON.stringify({ fields }),
     headers: {
       authorization: `bearer ${access_token}`,
       "content-type": "application/json",
@@ -35,8 +35,8 @@ async function createIntakeFormResponse(
 // Id(s) of the field(s) to respond to the intake form with.
 // Please see and run get-intake-forms.js to retrieve these field ids
 // from the http response's body.
-const FIELD_ID_1 = "035cfe94-5a72-45fb-8714-4d87efcd4d19";
-const FIELD_ID_2 = "343upods-5336-4563-sbyy-4664df6724df";
+const FIELD_ID_1 = "a79a3e19-4a3f-4cff-8ec8-bd2602b93841";
+const FIELD_ID_2 = "9b985c51-7f57-438a-971a-85d92a1f5d21";
 
 async function main() {
   const token = await getToken();
@@ -47,23 +47,22 @@ async function main() {
     console.log("> yarn run get-intake-form <organizationId> <formId>");
   } else {
     try {
-      const responseFields = {
-        fields: [
-          {
-            id: FIELD_ID_1,
-            value: "value",
-          },
-          {
-            id: FIELD_ID_2,
-            value: ["value_1", "value_2"],
-          },
-        ],
-      };
+      const fields = [
+        {
+          id: FIELD_ID_1,
+          value: "my answer",
+        },
+        {
+          id: FIELD_ID_2,
+          value: [0, 1],
+        },
+      ];
+
       const result = await createIntakeFormResponse(
         token,
         organizationId,
         formId,
-        responseFields
+        fields
       );
       console.log(JSON.stringify(result, null, 2));
     } catch (e) {
