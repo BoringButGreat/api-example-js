@@ -61,3 +61,27 @@ Audit history will track the token used to make the change, and will display in 
 - `entity_id` the vendorful id of the legal entity you wish to update
 - `attribute_id` the vendorful id of the attribute you wish to update
 - `value` the new value
+
+## Intake forms
+
+### /GET
+
+See it in action: `yarn run get-intake-form organization_id form_id`
+
+This command assumes you have a `secrets.json` file with appropriate credentials. See [secrets-sample.json](./secrets-sample.json) for the format.
+
+The `organization_id` is the ID of the organization that created the intake form.
+The `form_id` is the ID of the intake form.
+
+The response returned can be populated with values and used for the /POST with no additional changes required.
+
+### /POST
+
+See it in action: `yarn run create-intake-form-response organization_id form_id`
+
+This command assumes you have a `secrets.json` file with appropriate credentials. See [secrets-sample.json](./secrets-sample.json) for the format.
+
+The `organization_id` is the ID of the organization that created the intake form.
+The `form_id` is the ID of the intake form.
+
+The field values can be hardcoded in `/src/intake-forms/create-intake-forms`. See that file for an example.

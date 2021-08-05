@@ -1,13 +1,12 @@
 import fetch from "node-fetch";
 import readline from "readline";
+import { TOKEN_ENDPOINT } from "./../api_urls.js";
 
 /*
  * Creating a token with grant_type password is as easy as
  * POSTing JSON with username, password, and grant_type
  * to the token endpoint.
  */
-
-const TOKEN_ENDPOINT = "https://api.vendorful.com/auth/v1/token";
 
 async function createPasswordToken(username, password) {
   const response = await fetch(TOKEN_ENDPOINT, {
