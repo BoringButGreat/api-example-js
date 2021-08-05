@@ -32,11 +32,91 @@ async function createIntakeFormResponse(
   return await response.json();
 }
 
-// Id(s) of the field(s) to respond to the intake form with.
+// Example of fields from /GET response with "value" added
 // Please see and run get-intake-forms.js to retrieve these field ids
 // from the http response's body.
-const FIELD_ID_1 = "a79a3e19-4a3f-4cff-8ec8-bd2602b93841";
-const FIELD_ID_2 = "9b985c51-7f57-438a-971a-85d92a1f5d21";
+const fields = [
+  {
+    body: null,
+    id: "874d5c18-c806-4688-babc-28b50b457bda",
+    multi: null,
+    name: "Short Text Test",
+    options: [],
+    required: false,
+    type: "string",
+    value: "test",
+  },
+  {
+    body: null,
+    id: "649e1fc1-1950-415d-b97e-a89f3e865969",
+    multi: null,
+    name: "Expanded Text Test",
+    options: [],
+    required: false,
+    type: "textarea",
+    value: "test",
+  },
+  {
+    body: null,
+    id: "d5d79f93-9c6f-4960-b5d0-e9bc5fa6a176",
+    multi: null,
+    name: "Checkbox UI Test",
+    options: [],
+    required: false,
+    type: "checkbox",
+    value: true,
+  },
+  {
+    body: null,
+    id: "d72fb676-6488-4404-9d89-1cd863031ec5",
+    multi: null,
+    name: "Single Select Test: Sandwich Choice",
+    options: ["Ham", "Roast Beef", "Pimento Cheese"],
+    required: false,
+    type: "select",
+    value: "Roast Beef",
+  },
+  {
+    body: null,
+    id: "7d0a3375-3642-44be-9b9b-a9f6b6da26b3",
+    multi: true,
+    name: "Multi-Select Test: Cookie Options",
+    options: ["Snickerdoodle", "Chocolate Chip", "Peanut Butter"],
+    required: false,
+    type: "select",
+    value: ["Snickerdoodle", "Chocolate Chip"],
+  },
+  {
+    body: null,
+    id: "4b7ebdff-afb3-484a-96e7-c7adb5ddab8a",
+    multi: null,
+    name: "Number Test",
+    options: [],
+    required: false,
+    type: "number",
+    value: 5,
+  },
+  {
+    body: null,
+    id: "7b9be557-5299-447c-8b5f-07214c3ea183",
+    multi: null,
+    name: "Range Test",
+    options: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+    required: false,
+    type: "range",
+    value: "4",
+  },
+  {
+    body: null,
+    id: "f8b048f2-ab5d-4391-84b5-2c7b0a077552",
+    multi: null,
+    name: "Date Time Test",
+    options: [],
+    required: false,
+    type: "datetime",
+    value: new Date(),
+  },
+];
 
 async function main() {
   const token = await getToken();
@@ -47,17 +127,6 @@ async function main() {
     console.log("> yarn run get-intake-form <organizationId> <formId>");
   } else {
     try {
-      const fields = [
-        {
-          id: FIELD_ID_1,
-          value: "my answer",
-        },
-        {
-          id: FIELD_ID_2,
-          value: [0, 1],
-        },
-      ];
-
       const result = await createIntakeFormResponse(
         token,
         organizationId,
